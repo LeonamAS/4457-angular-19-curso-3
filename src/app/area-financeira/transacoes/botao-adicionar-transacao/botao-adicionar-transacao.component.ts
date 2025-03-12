@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import { BotaoComponent } from "../../../compartilhados/botao/botao.component";
 import { ModalComponent } from "../../../compartilhados/modal/modal.component";
 
