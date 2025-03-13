@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { SaldoComponent } from "./saldo/saldo.component";
 import { TransacoesComponent } from "./transacoes/transacoes.component";
 import { ContasComponent } from "./contas/contas.component";
@@ -57,13 +57,25 @@ export class AreaFinanceiraComponent {
     },
   ]);
 
-  contas = signal<Conta[]>([]);
+  contasComSaldoInicial = signal<Conta[]>([]);
+
+  contas = computed(() => {
+    return this.contasComSaldoInicial().map((conta) => {
+      const saldoAtualizado = this.calculaSaldoAtualizado(conta);
+
+      return { ...conta, saldo: saldoAtualizado };
+    });
+  });
+
+  calculaSaldoAtualizado(conta: Conta) {
+    return conta.saldo + 20;
+  }
 
   processarTransacao(transacao: Transacao) {
     this.transacoes.update((transacoes) => [transacao, ...transacoes]);
   }
 
   adicionarConta(conta: Conta) {
-    this.contas.update((contas) => [...contas, conta]);
+    this.contasComSaldoInicial.update((contas) => [...contas, conta]);
   }
 }
